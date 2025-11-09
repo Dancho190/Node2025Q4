@@ -1,14 +1,14 @@
 import express from 'express';
-import { router } from './routes/route.js';
+import { router } from './src/routes/route.js';
 
 const createApp = () => {
   const app = express();
-
-  // Middleware для парсинга
   app.use(express.json());
 
+  // Подключаем роуты
   app.use('/', router);
 
+  // Обработчик ошибок
   app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     if (!res.headersSent) {
@@ -21,14 +21,13 @@ const createApp = () => {
 
 export const startServer = (port) => {
   const app = createApp();
-
+  console.log('Starting server...');
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
-
   return app;
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  startServer(3000); 
+  startServer(3000);
 }
